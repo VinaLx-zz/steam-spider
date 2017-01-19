@@ -32,7 +32,7 @@ class GameDb:
         DELETE FROM GameInfo WHERE game_title = %s;
         """
 
-    def insert_game(self, game_info):
+    def save(self, game_info):
         with self._connection.cursor() as self._cursor:
             title = game_info.details.title
             self._delete_by_title(title)
@@ -40,6 +40,9 @@ class GameDb:
             self._insert_review(title, game_info.review_summary)
 
         self._connection.commit()
+        import os
+        print('pid: %d, %d: %s' %
+              (os.getpid(), game_info.index, game_info.details.title))
 
     def _insert_game_details(self, index, detail):
         self._cursor.execute(self.INSERT_DETAIL_SQL, (
@@ -74,7 +77,7 @@ if __name__ == '__main__':
     from extractor import extractor
     sample_dir = '../samples'
     samples = os.listdir(sample_dir)
-    with open('db.json') as config_file:
+    with open('../config-files/db.json') as config_file:
         db_config = json.load(config_file)
 
     game_db = GameDb(db_config)
@@ -83,4 +86,4 @@ if __name__ == '__main__':
         sample_path = os.path.join(sample_dir, sample)
         with open(sample_path) as f:
             game_info = extractor.extract(0, f.read())
-            game_db.insert_game(game_info)
+            game_db.save(game_info)

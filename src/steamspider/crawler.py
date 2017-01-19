@@ -2,7 +2,7 @@ import requests
 import json
 
 BASE_URL = 'http://store.steampowered.com/app/'
-HEADERS = json.load(open('headers.json'))
+HEADERS = json.load(open('config-files/headers.json'))
 
 
 def get_game(index):

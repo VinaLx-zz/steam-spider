@@ -3,8 +3,9 @@
 import pymysql
 import json
 
-if __name__ == '__main__':
-    with open('db.json') as config_file:
+
+def init_db(config_file_path):
+    with open(config_file_path) as config_file:
         db_config = json.load(config_file)
 
     connection = pymysql.connect(
@@ -16,3 +17,7 @@ if __name__ == '__main__':
     with connection.cursor() as cursor, open('tables.sql') as sql_file:
         cursor.execute(sql_file.read())
     connection.commit()
+
+
+if __name__ == '__main__':
+    init_db('../config-files/db.json')
