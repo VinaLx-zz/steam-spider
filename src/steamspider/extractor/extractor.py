@@ -10,9 +10,14 @@ else:
 
 
 class GameInfo:
-    def __init__(self, review=None, detail=None):
+    def __init__(self, index, review=None, detail=None):
         self._review_summary = review
         self._details = detail
+        self._index = index
+
+    @property
+    def index(self):
+        return self._index
 
     @property
     def review_summary(self):
@@ -33,16 +38,17 @@ class GameInfo:
     def to_json(self):
         return {
             'review_summary': self.review_summary.to_json(),
-            'details': self.details.to_json()
+            'details': self.details.to_json(),
+            'index': self.index
         }
 
     def __str__(self):
         return json.dumps(self.to_json())
 
 
-def extract(page):
+def extract(index, page):
     soup = bs4.BeautifulSoup(page, 'lxml')
-    game_info = GameInfo()
+    game_info = GameInfo(index)
     game_info.review_summary = review.extract(soup)
     game_info.details = detail.extract(soup)
     return game_info
@@ -59,4 +65,4 @@ if __name__ == '__main__':
         sample_path = join(sample_dir, sample)
         with open(sample_path) as f:
             content = f.read()
-            json.dump(extract(content).to_json(), stdout, indent=4)
+            json.dump(extract(0, content).to_json(), stdout, indent=4)

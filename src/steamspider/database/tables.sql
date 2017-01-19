@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS GameInfo;
 
 CREATE TABLE GameInfo (
     game_title VARCHAR(255),
+    num int NOT NULL,
     developer VARCHAR(255),
     publisher VARCHAR(255),
     release_date VARCHAR(127),

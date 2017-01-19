@@ -1,4 +1,4 @@
-# /usr/bin/env python3
+#! /usr/bin/python3
 
 import pymysql
 import json
@@ -8,8 +8,8 @@ if __name__ == '__main__':
         db_config = json.load(config_file)
 
     connection = pymysql.connect(
-        host='localhost',
-        user=db_config['user'],
+        host=db_config['host'],
+        user=db_config['username'],
         db=db_config['database'],
         password=db_config['password'])
 

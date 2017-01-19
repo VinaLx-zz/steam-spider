@@ -3,16 +3,21 @@ import pymysql
 
 class GameDb:
 
-    def __init__(self, db_name, username, password, host='localhost'):
-        self._connection = pymysql.connect(host=host, user=username,
-                                           password=password, db=db_name)
+    def __init__(self, db_config):
+        self._connection = pymysql.connect(
+            host=db_config['host'],
+            user=db_config['username'],
+            password=db_config['password'],
+            db=db_config['database'])
+
     INSERT_GENRE_SQL = \
         'INSERT INTO Genre (game_title, genre) VALUES (%s, %s);'
 
     INSERT_DETAIL_SQL = \
         """
-        INSERT INTO GameInfo (game_title, developer, publisher, release_date)
-        VALUES (%s, %s, %s, %s);
+        INSERT INTO GameInfo
+        (game_title, num, developer, publisher, release_date)
+        VALUES (%s, %s, %s, %s, %s);
         """
 
     INSERT_REVIEW_SQL = \
@@ -31,14 +36,16 @@ class GameDb:
         with self._connection.cursor() as self._cursor:
             title = game_info.details.title
             self._delete_by_title(title)
-            self._insert_game_details(game_info.details)
+            self._insert_game_details(game_info.index, game_info.details)
             self._insert_review(title, game_info.review_summary)
+
         self._connection.commit()
 
-    def _insert_game_details(self, detail):
+    def _insert_game_details(self, index, detail):
         self._cursor.execute(self.INSERT_DETAIL_SQL, (
-            detail.title, detail.developer,
+            detail.title, index, detail.developer,
             detail.publisher, detail.release_date))
+
         self._insert_genres(detail.title, detail.genre)
 
     def _insert_genres(self, title, genres):
@@ -70,12 +77,10 @@ if __name__ == '__main__':
     with open('db.json') as config_file:
         db_config = json.load(config_file)
 
-    game_db = GameDb(db_name=db_config['database'],
-                     username=db_config['user'],
-                     password=db_config['password'])
+    game_db = GameDb(db_config)
 
     for sample in samples:
         sample_path = os.path.join(sample_dir, sample)
         with open(sample_path) as f:
-            game_info = extractor.extract(f.read())
+            game_info = extractor.extract(0, f.read())
             game_db.insert_game(game_info)

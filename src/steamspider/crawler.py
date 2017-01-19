@@ -5,14 +5,6 @@ BASE_URL = 'http://store.steampowered.com/app/'
 HEADERS = json.load(open('headers.json'))
 
 
-def pages(start_idx, end_idx, step):
-    for index in range(start_idx, end_idx, step):
-        text = get_game(index)
-        if not len(text):
-            continue
-        yield index, text
-
-
 def get_game(index):
     url = _make_url(index)
     text = _get_page(url)
@@ -25,7 +17,6 @@ def _make_url(index):
 
 
 def _get_page(url):
-    print('getting', url)
     response = requests.get(url, headers=HEADERS, allow_redirects=False)
     if response.status_code != 200:
         return ""
@@ -35,6 +26,15 @@ def _get_page(url):
 def _save_page(index, page):
     with open('samples/{0}.html'.format(index), 'w') as f:
         f.write(page)
+
+
+def pages(start_idx, end_idx, step):
+    for index in range(start_idx, end_idx, step):
+        text = get_game(index)
+        if not len(text):
+            continue
+        yield index, text
+
 
 if __name__ == '__main__':
     STARTING_POINT = 0
