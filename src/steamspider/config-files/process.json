@@ -1,4 +1,4 @@
 {
-    "workers": 5,
-    "jobs": 200
+    "workers": 10,
+    "jobs": 40000
 }

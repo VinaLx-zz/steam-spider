@@ -14,7 +14,9 @@ class Worker:
                 self._work_one(index)
             except Exception as e:
                 import os
-                print("EXCEPTION pid: %d, %d: %s" % (os.getpid(), index, e))
+                import sys
+                print("EXCEPTION index: %d, title: %s"
+                        % (index, e), file=sys.stderr)
 
     def _work_one(self, index):
         page = crawler.get_game(index)
