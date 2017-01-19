@@ -15,12 +15,14 @@ class ReviewSummary:
     def overall(self):
         return self._overall
 
+    def to_json(self):
+        return {
+            'recent': self.recent.to_json(),
+            'overall': self.overall.to_json()
+        }
+
     def __str__(self):
-        return json.dumps(
-                {
-                    'recent': str(self.recent),
-                    'overall': str(self.overall)
-                })
+        return json.dumps(self.to_json())
 
 
 class ReviewInfo:
@@ -41,13 +43,15 @@ class ReviewInfo:
     def like_percent(self):
         return self._like_percent
 
+    def to_json(self):
+        return {
+            'opinion': self.opinion,
+            'total': self.total_review,
+            'like': self.like_percent
+        }
+
     def __str__(self):
-        return json.dumps(
-                {
-                    'opinion': self.opinion,
-                    'total': self.total_review,
-                    'like': self.like_percent
-                })
+        return json.dumps(self.to_json())
 
 
 def extract(soup):
