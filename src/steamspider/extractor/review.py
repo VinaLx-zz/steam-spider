@@ -56,10 +56,10 @@ class ReviewInfo:
 
 def extract(soup):
     review_infos = soup.find_all('div', 'user_reviews_summary_row')
-    recent_info = _extract_info(review_infos[0])
-    overall_info = None
+    overall_info = _extract_info(review_infos[len(review_infos)-1])
+    recent_info = None
     if (len(review_infos) > 1):
-        overall_info = _extract_info(review_infos[1])
+        recent_info = _extract_info(review_infos[0])
 
     return ReviewSummary(recent_info, overall_info)
 

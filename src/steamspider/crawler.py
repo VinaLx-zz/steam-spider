@@ -2,26 +2,26 @@ import requests
 import json
 
 BASE_URL = 'http://store.steampowered.com/app/'
-
-STARTING_POINT = 0
-END_POINT = 100
-STEP = 10
-
 HEADERS = json.load(open('headers.json'))
 
 
-def pages():
-    for index in range(STARTING_POINT, END_POINT, STEP):
-        url = _make_url(index)
-        text = _get_page(url)
+def pages(start_idx, end_idx, step):
+    for index in range(start_idx, end_idx, step):
+        text = get_game(index)
         if not len(text):
             continue
         yield index, text
 
 
+def get_game(index):
+    url = _make_url(index)
+    text = _get_page(url)
+    return text
+
+
 def _make_url(index):
-    # http://store.steampowered.com/app/XX
-    return BASE_URL + str(index)
+    # http://store.steampowered.com/app/XX0
+    return BASE_URL + str(index * 10)
 
 
 def _get_page(url):
@@ -37,6 +37,9 @@ def _save_page(index, page):
         f.write(page)
 
 if __name__ == '__main__':
-    for index, page in pages():
+    STARTING_POINT = 0
+    END_POINT = 100
+    STEP = 1
+    for index, page in pages(STARTING_POINT, END_POINT, STEP):
         print('get', index)
         _save_page(index, page)
