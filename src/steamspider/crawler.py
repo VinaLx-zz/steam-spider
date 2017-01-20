@@ -35,7 +35,6 @@ def pages(start_idx, end_idx, step):
             continue
         yield index, text
 
-
 if __name__ == '__main__':
     STARTING_POINT = 0
     END_POINT = 100

@@ -45,9 +45,17 @@ class GameInfo:
     def __str__(self):
         return json.dumps(self.to_json())
 
+def _check_page(soup):
+    review_infos = soup.find_all('div', 'user_reviews_summary_row')
+    if not review_infos:
+        return False
+    return True
 
-def extract(index, page):
+
+def extract(page, index=0):
     soup = bs4.BeautifulSoup(page, 'lxml')
+    if not _check_page(soup):
+        return None
     game_info = GameInfo(index)
     game_info.review_summary = review.extract(soup)
     game_info.details = detail.extract(soup)
@@ -65,4 +73,4 @@ if __name__ == '__main__':
         sample_path = join(sample_dir, sample)
         with open(sample_path) as f:
             content = f.read()
-            json.dump(extract(0, content).to_json(), stdout, indent=4)
+            json.dump(extract(content).to_json(), stdout, indent=4)

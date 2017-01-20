@@ -1,0 +1,7 @@
+{
+    "database": "steam",
+    "username": "root",
+    "password": null,
+    "host": "localhost",
+    "charset": "utf8"
+}

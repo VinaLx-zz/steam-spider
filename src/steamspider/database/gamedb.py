@@ -8,7 +8,8 @@ class GameDb:
             host=db_config['host'],
             user=db_config['username'],
             password=db_config['password'],
-            db=db_config['database'])
+            db=db_config['database'],
+            charset=db_config['charset'])
 
     INSERT_GENRE_SQL = \
         'INSERT INTO Genre (game_title, genre) VALUES (%s, %s);'
@@ -57,10 +58,11 @@ class GameDb:
 
     def _insert_review(self, title, review):
         self._insert_review_info(title, review.overall, "Overall")
-        if review.recent is not None:
-            self._insert_review_info(title, review.recent, "Recent")
+        self._insert_review_info(title, review.recent, "Recent")
 
     def _insert_review_info(self, title, review, t):
+        if review is None:
+            return
         self._cursor.execute(
             self.INSERT_REVIEW_SQL, (
                 title, review.opinion, review.like_percent,

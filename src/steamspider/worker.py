@@ -1,4 +1,6 @@
 import crawler
+import os
+import sys
 from extractor import extractor
 from database import gamedb
 
@@ -13,16 +15,16 @@ class Worker:
             try:
                 self._work_one(index)
             except Exception as e:
-                import os
-                import sys
                 print("EXCEPTION index: %d, title: %s"
                         % (index, e), file=sys.stderr)
 
     def _work_one(self, index):
         page = crawler.get_game(index)
-        if not len(page):
+        if not page:
             return
-        game_info = extractor.extract(index, page)
+        game_info = extractor.extract(page, index)
+        if game_info is None:
+            return
         self._game_db.save(game_info)
 
 if __name__ == '__main__':
@@ -30,5 +32,5 @@ if __name__ == '__main__':
     with open('config-files/db.json') as f:
         db_config = json.load(f)
 
-    w = Worker((1, 11), db_config)
+    w = Worker(range(1, 11), db_config)
     w.work()
