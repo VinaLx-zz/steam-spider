@@ -1,2 +1,38 @@
 # steam-spider
-search good games on steam
+### Brief
+
+crawl game informations from steam including like rates, number of review people, genres etc.
+
+It's merely runnable now, not quite usable :P
+
+### Dependency
+
+- python3.x
+  - pymysql
+  - beautifulsoup4
+  - requests
+- mysql
+
+### Usage
+
+1. Modify username, password etc. in  `path/to/steam-spider/src/steamspider/config-files/db.json` 
+
+2. ```shell
+   cd src/steamspider/database
+   python3 initdb.py
+   cd ..
+   python3 steam.py
+   ```
+
+3. wait...
+
+4. mysql and query
+
+   ​
+
+### TODO
+
+- User interface instead of sql query directly
+- More Infomations such as reviews and prices
+- More flexible way to crawl informations
+- ...
