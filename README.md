@@ -15,9 +15,9 @@ It's merely runnable now, not quite usable :P
 
 ### Usage
 
-1. Modify username, password etc. in  `path/to/steam-spider/src/steamspider/config-files/db.json` 
+- Modify username, password etc. in  `path/to/steam-spider/src/steamspider/config-files/db.json` 
 
-2.
+- 
 ```bash
    cd src/steamspider/database
    python3 initdb.py
@@ -25,9 +25,9 @@ It's merely runnable now, not quite usable :P
    python3 steam.py
 ```
 
-3. wait...
+- wait...
 
-4. mysql and query
+- mysql and query
 
 
 
